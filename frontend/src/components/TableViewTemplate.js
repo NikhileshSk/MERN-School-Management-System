@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { StyledTableCell, StyledTableRow } from './styles';
 import { Table, TableBody, TableContainer, TableHead, TablePagination } from '@mui/material';
+import styled from 'styled-components';
 
 const TableViewTemplate = ({ columns, rows }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
     return (
-        <>
-            <TableContainer>
+        <TableWrapper>
+            <StyledTableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <StyledTableRow>
@@ -45,8 +47,8 @@ const TableViewTemplate = ({ columns, rows }) => {
                             })}
                     </TableBody>
                 </Table>
-            </TableContainer>
-            <TablePagination
+            </StyledTableContainer>
+            <StyledPagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
                 component="div"
                 count={rows.length}
@@ -54,12 +56,68 @@ const TableViewTemplate = ({ columns, rows }) => {
                 page={page}
                 onPageChange={(event, newPage) => setPage(newPage)}
                 onRowsPerPageChange={(event) => {
-                    setRowsPerPage(parseInt(event.target.value, 5));
+                    setRowsPerPage(parseInt(event.target.value, 10));
                     setPage(0);
                 }}
             />
-        </>
-    )
-}
+        </TableWrapper>
+    );
+};
 
-export default TableViewTemplate
+export default TableViewTemplate;
+
+// Styled Components
+const TableWrapper = styled.div`
+  width: 100%;
+`;
+
+const StyledTableContainer = styled(TableContainer)`
+  && {
+    background: transparent;
+    
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+  }
+`;
+
+const StyledPagination = styled(TablePagination)`
+  && {
+    color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    
+    .MuiTablePagination-selectLabel,
+    .MuiTablePagination-displayedRows {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .MuiTablePagination-select {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .MuiSelect-icon {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .MuiIconButton-root {
+      color: rgba(255, 255, 255, 0.5);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      &.Mui-disabled {
+        color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+`;

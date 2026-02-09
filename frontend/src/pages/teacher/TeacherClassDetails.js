@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { getClassStudents } from "../../redux/sclassRelated/sclassHandle";
-import { Paper, Box, Typography, ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
-import { BlackButton, BlueButton} from "../../components/buttonStyles";
+import { Paper, ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
+import { BlueButton } from "../../components/buttonStyles";
 import TableTemplate from "../../components/TableTemplate";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import styled, { keyframes } from 'styled-components';
 
 const TeacherClassDetails = () => {
     const navigate = useNavigate()
@@ -78,7 +79,7 @@ const TeacherClassDetails = () => {
             setOpen(false);
         };
         return (
-            <>
+            <ButtonContainer>
                 <BlueButton
                     variant="contained"
                     onClick={() =>
@@ -88,9 +89,9 @@ const TeacherClassDetails = () => {
                     View
                 </BlueButton>
                 <React.Fragment>
-                    <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-                        <Button onClick={handleClick}>{options[selectedIndex]}</Button>
-                        <BlackButton
+                    <StyledButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
+                        <ActionButton onClick={handleClick}>{options[selectedIndex]}</ActionButton>
+                        <DropdownButton
                             size="small"
                             aria-controls={open ? 'split-button-menu' : undefined}
                             aria-expanded={open ? 'true' : undefined}
@@ -99,8 +100,8 @@ const TeacherClassDetails = () => {
                             onClick={handleToggle}
                         >
                             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                        </BlackButton>
-                    </ButtonGroup>
+                        </DropdownButton>
+                    </StyledButtonGroup>
                     <Popper
                         sx={{
                             zIndex: 1,
@@ -119,60 +120,255 @@ const TeacherClassDetails = () => {
                                         placement === 'bottom' ? 'center top' : 'center bottom',
                                 }}
                             >
-                                <Paper>
+                                <StyledPaper>
                                     <ClickAwayListener onClickAway={handleClose}>
                                         <MenuList id="split-button-menu" autoFocusItem>
                                             {options.map((option, index) => (
-                                                <MenuItem
+                                                <StyledMenuItem
                                                     key={option}
                                                     disabled={index === 2}
                                                     selected={index === selectedIndex}
                                                     onClick={(event) => handleMenuItemClick(event, index)}
                                                 >
                                                     {option}
-                                                </MenuItem>
+                                                </StyledMenuItem>
                                             ))}
                                         </MenuList>
                                     </ClickAwayListener>
-                                </Paper>
+                                </StyledPaper>
                             </Grow>
                         )}
                     </Popper>
                 </React.Fragment>
-            </>
+            </ButtonContainer>
         );
     };
 
     return (
-        <>
+        <PageWrapper>
             {loading ? (
-                <div>Loading...</div>
+                <LoadingWrapper>
+                    <LoadingSpinner />
+                    <LoadingText>Loading class details...</LoadingText>
+                </LoadingWrapper>
             ) : (
                 <>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Class Details
-                    </Typography>
-                    {getresponse ? (
-                        <>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                                No Students Found
-                            </Box>
-                        </>
-                    ) : (
-                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            <Typography variant="h5" gutterBottom>
-                                Students List:
-                            </Typography>
+                    <PageHeader>
+                        <HeaderIcon>👨‍🎓</HeaderIcon>
+                        <HeaderText>
+                            <PageTitle>Class Students</PageTitle>
+                            <PageSubtitle>
+                                {currentUser.teachSclass?.sclassName} • {sclassStudents?.length || 0} students
+                            </PageSubtitle>
+                        </HeaderText>
+                    </PageHeader>
 
+                    {getresponse ? (
+                        <EmptyState>
+                            <EmptyIcon>📚</EmptyIcon>
+                            <EmptyTitle>No Students Found</EmptyTitle>
+                            <EmptyText>There are no students enrolled in this class yet</EmptyText>
+                        </EmptyState>
+                    ) : (
+                        <TableWrapper>
                             {Array.isArray(sclassStudents) && sclassStudents.length > 0 &&
                                 <TableTemplate buttonHaver={StudentsButtonHaver} columns={studentColumns} rows={studentRows} />
                             }
-                        </Paper>
+                        </TableWrapper>
                     )}
                 </>
             )}
-        </>
+        </PageWrapper>
     );
 };
 
 export default TeacherClassDetails;
+
+// Animations
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+// Styled Components
+const PageWrapper = styled.div`
+  animation: ${fadeInUp} 0.5s ease forwards;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(245, 158, 11, 0.2);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: ${spin} 0.8s linear infinite;
+`;
+
+const LoadingText = styled.p`
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+`;
+
+const PageHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+`;
+
+const HeaderIcon = styled.span`
+  font-size: 2.5rem;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(251, 191, 36, 0.15) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 16px;
+`;
+
+const HeaderText = styled.div``;
+
+const PageTitle = styled.h1`
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+`;
+
+const PageSubtitle = styled.p`
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.5);
+`;
+
+const TableWrapper = styled.div`
+  background: rgba(30, 30, 60, 0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+`;
+
+const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  padding: 40px;
+  background: rgba(30, 30, 60, 0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+`;
+
+const EmptyIcon = styled.span`
+  font-size: 4rem;
+  margin-bottom: 16px;
+`;
+
+const EmptyTitle = styled.h2`
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+`;
+
+const EmptyText = styled.p`
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+`;
+
+const StyledButtonGroup = styled(ButtonGroup)`
+  && {
+    .MuiButtonGroup-grouped {
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+  }
+`;
+
+const ActionButton = styled(Button)`
+  && {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: #1a1a2e;
+    font-weight: 600;
+    text-transform: none;
+    padding: 6px 16px;
+    
+    &:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #fcd34d 100%);
+    }
+  }
+`;
+
+const DropdownButton = styled(Button)`
+  && {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    color: #1a1a2e;
+    min-width: 36px;
+    
+    &:hover {
+      background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    }
+  }
+`;
+
+const StyledPaper = styled(Paper)`
+  && {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  && {
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    
+    &:hover {
+      background: rgba(245, 158, 11, 0.15);
+    }
+    
+    &.Mui-selected {
+      background: rgba(245, 158, 11, 0.2);
+      
+      &:hover {
+        background: rgba(245, 158, 11, 0.25);
+      }
+    }
+  }
+`;
