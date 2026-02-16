@@ -26,6 +26,10 @@ mongoose
 
 app.use('/', Routes);
 
-app.listen(PORT, () => {
-    console.log(`Server started at port no. ${PORT}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server started at port no. ${PORT}`)
+    })
+}
+
+module.exports = app;
