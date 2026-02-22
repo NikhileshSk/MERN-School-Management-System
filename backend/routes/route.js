@@ -2,10 +2,11 @@ const router = require('express').Router();
 
 // const { adminRegister, adminLogIn, deleteAdmin, getAdminDetail, updateAdmin } = require('../controllers/admin-controller.js');
 
-const { adminRegister, adminLogIn, getAdminDetail} = require('../controllers/admin-controller.js');
+const { adminRegister, adminLogIn, getAdminDetail } = require('../controllers/admin-controller.js');
 
 const { sclassCreate, sclassList, deleteSclass, deleteSclasses, getSclassDetail, getSclassStudents } = require('../controllers/class-controller.js');
 const { complainCreate, complainList } = require('../controllers/complain-controller.js');
+const { feeCreate, feeList, getFeeDetail, updateFee, deleteFee, deleteFees, getFeeSummary } = require('../controllers/fee-controller.js');
 const { noticeCreate, noticeList, deleteNotices, deleteNotice, updateNotice } = require('../controllers/notice-controller.js');
 const {
     studentRegister,
@@ -115,5 +116,18 @@ router.get("/Subject/:id", getSubjectDetail)
 router.delete("/Subject/:id", deleteSubject)
 router.delete("/Subjects/:id", deleteSubjects)
 router.delete("/SubjectsClass/:id", deleteSubjectsByClass)
+
+// Fee
+
+router.post('/FeeCreate', feeCreate);
+
+router.get('/FeeList/:id', feeList);
+router.get('/Fee/:id', getFeeDetail);
+router.get('/FeeSummary/:id', getFeeSummary);
+
+router.put('/Fee/:id', updateFee);
+
+router.delete('/Fee/:id', deleteFee);
+router.delete('/Fees/:id', deleteFees);
 
 module.exports = router;

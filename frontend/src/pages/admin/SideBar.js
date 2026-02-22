@@ -12,77 +12,79 @@ import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import ReportIcon from '@mui/icons-material/Report';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 
 const SideBar = () => {
-    const location = useLocation();
+  const location = useLocation();
 
-    const menuItems = [
-        { path: '/', altPath: '/Admin/dashboard', icon: <HomeIcon />, label: 'Dashboard' },
-        { path: '/Admin/classes', icon: <ClassOutlinedIcon />, label: 'Classes' },
-        { path: '/Admin/subjects', icon: <AssignmentIcon />, label: 'Subjects' },
-        { path: '/Admin/teachers', icon: <SupervisorAccountOutlinedIcon />, label: 'Teachers' },
-        { path: '/Admin/students', icon: <PersonOutlineIcon />, label: 'Students' },
-        { path: '/Admin/notices', icon: <AnnouncementOutlinedIcon />, label: 'Notices' },
-        { path: '/Admin/complains', icon: <ReportIcon />, label: 'Complaints' },
-    ];
+  const menuItems = [
+    { path: '/', altPath: '/Admin/dashboard', icon: <HomeIcon />, label: 'Dashboard' },
+    { path: '/Admin/classes', icon: <ClassOutlinedIcon />, label: 'Classes' },
+    { path: '/Admin/subjects', icon: <AssignmentIcon />, label: 'Subjects' },
+    { path: '/Admin/teachers', icon: <SupervisorAccountOutlinedIcon />, label: 'Teachers' },
+    { path: '/Admin/students', icon: <PersonOutlineIcon />, label: 'Students' },
+    { path: '/Admin/fees', icon: <PaymentOutlinedIcon />, label: 'Fees' },
+    { path: '/Admin/notices', icon: <AnnouncementOutlinedIcon />, label: 'Notices' },
+    { path: '/Admin/complains', icon: <ReportIcon />, label: 'Complaints' },
+  ];
 
-    const userItems = [
-        { path: '/Admin/profile', icon: <AccountCircleOutlinedIcon />, label: 'Profile' },
-        { path: '/logout', icon: <ExitToAppIcon />, label: 'Logout' },
-    ];
+  const userItems = [
+    { path: '/Admin/profile', icon: <AccountCircleOutlinedIcon />, label: 'Profile' },
+    { path: '/logout', icon: <ExitToAppIcon />, label: 'Logout' },
+  ];
 
-    const isActive = (item) => {
-        if (item.altPath && (location.pathname === item.path || location.pathname === item.altPath)) {
-            return true;
-        }
-        return location.pathname.startsWith(item.path) && item.path !== '/';
-    };
+  const isActive = (item) => {
+    if (item.altPath && (location.pathname === item.path || location.pathname === item.altPath)) {
+      return true;
+    }
+    return location.pathname.startsWith(item.path) && item.path !== '/';
+  };
 
-    return (
-        <NavContainer>
-            <NavSection>
-                <SectionLabel>Main Menu</SectionLabel>
-                {menuItems.map((item) => (
-                    <StyledListItemButton
-                        key={item.path}
-                        component={Link}
-                        to={item.path === '/' ? '/Admin/dashboard' : item.path}
-                        $isActive={isActive(item) || (item.path === '/' && location.pathname === '/')}
-                    >
-                        <IconWrapper $isActive={isActive(item) || (item.path === '/' && location.pathname === '/')}>
-                            {item.icon}
-                        </IconWrapper>
-                        <StyledListItemText primary={item.label} />
-                        {(isActive(item) || (item.path === '/' && location.pathname === '/')) && <ActiveIndicator />}
-                    </StyledListItemButton>
-                ))}
-            </NavSection>
+  return (
+    <NavContainer>
+      <NavSection>
+        <SectionLabel>Main Menu</SectionLabel>
+        {menuItems.map((item) => (
+          <StyledListItemButton
+            key={item.path}
+            component={Link}
+            to={item.path === '/' ? '/Admin/dashboard' : item.path}
+            $isActive={isActive(item) || (item.path === '/' && location.pathname === '/')}
+          >
+            <IconWrapper $isActive={isActive(item) || (item.path === '/' && location.pathname === '/')}>
+              {item.icon}
+            </IconWrapper>
+            <StyledListItemText primary={item.label} />
+            {(isActive(item) || (item.path === '/' && location.pathname === '/')) && <ActiveIndicator />}
+          </StyledListItemButton>
+        ))}
+      </NavSection>
 
-            <Divider />
+      <Divider />
 
-            <NavSection>
-                <SectionLabel>Account</SectionLabel>
-                {userItems.map((item) => (
-                    <StyledListItemButton
-                        key={item.path}
-                        component={Link}
-                        to={item.path}
-                        $isActive={location.pathname.startsWith(item.path)}
-                        $isLogout={item.path === '/logout'}
-                    >
-                        <IconWrapper
-                            $isActive={location.pathname.startsWith(item.path)}
-                            $isLogout={item.path === '/logout'}
-                        >
-                            {item.icon}
-                        </IconWrapper>
-                        <StyledListItemText primary={item.label} />
-                        {location.pathname.startsWith(item.path) && <ActiveIndicator />}
-                    </StyledListItemButton>
-                ))}
-            </NavSection>
-        </NavContainer>
-    );
+      <NavSection>
+        <SectionLabel>Account</SectionLabel>
+        {userItems.map((item) => (
+          <StyledListItemButton
+            key={item.path}
+            component={Link}
+            to={item.path}
+            $isActive={location.pathname.startsWith(item.path)}
+            $isLogout={item.path === '/logout'}
+          >
+            <IconWrapper
+              $isActive={location.pathname.startsWith(item.path)}
+              $isLogout={item.path === '/logout'}
+            >
+              {item.icon}
+            </IconWrapper>
+            <StyledListItemText primary={item.label} />
+            {location.pathname.startsWith(item.path) && <ActiveIndicator />}
+          </StyledListItemButton>
+        ))}
+      </NavSection>
+    </NavContainer>
+  );
 };
 
 export default SideBar;
@@ -126,14 +128,14 @@ const StyledListItemButton = styled(ListItemButton)`
     position: relative;
     transition: all 0.25s ease;
     background: ${props => props.$isActive
-        ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)'
-        : 'transparent'};
+    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)'
+    : 'transparent'};
     border: 1px solid ${props => props.$isActive ? 'rgba(99, 102, 241, 0.3)' : 'transparent'};
     
     &:hover {
       background: ${props => props.$isActive
-        ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)'
-        : 'rgba(255, 255, 255, 0.05)'};
+    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)'
+    : 'rgba(255, 255, 255, 0.05)'};
       border-color: ${props => props.$isActive ? 'rgba(99, 102, 241, 0.4)' : 'rgba(255, 255, 255, 0.1)'};
     }
 
@@ -150,9 +152,9 @@ const IconWrapper = styled(ListItemIcon)`
   && {
     min-width: 40px;
     color: ${props => {
-        if (props.$isLogout) return 'rgba(239, 68, 68, 0.8)';
-        return props.$isActive ? '#a5b4fc' : 'rgba(255, 255, 255, 0.5)';
-    }};
+    if (props.$isLogout) return 'rgba(239, 68, 68, 0.8)';
+    return props.$isActive ? '#a5b4fc' : 'rgba(255, 255, 255, 0.5)';
+  }};
     transition: all 0.25s ease;
     
     svg {

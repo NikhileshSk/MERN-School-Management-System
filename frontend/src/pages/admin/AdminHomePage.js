@@ -29,6 +29,7 @@ import { useEffect } from 'react';
 import { getAllSclasses } from '../../redux/sclassRelated/sclassHandle';
 import { getAllStudents } from '../../redux/studentRelated/studentHandle';
 import { getAllTeachers } from '../../redux/teacherRelated/teacherHandle';
+import { getFeeSummary } from '../../redux/feeRelated/feeHandle';
 
 const AdminHomePage = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const AdminHomePage = () => {
   const { studentsList } = useSelector((state) => state.student);
   const { sclassesList } = useSelector((state) => state.sclass);
   const { teachersList } = useSelector((state) => state.teacher);
+  const { feeSummary } = useSelector((state) => state.fee);
 
   const { currentUser } = useSelector(state => state.user);
 
@@ -45,12 +47,13 @@ const AdminHomePage = () => {
 
   /**
    * Fetch all data needed for the dashboard on component mount
-   * Dispatches actions to get students, classes, and teachers
+   * Dispatches actions to get students, classes, teachers, and fee summary
    */
   useEffect(() => {
     dispatch(getAllStudents(adminID));
     dispatch(getAllSclasses(adminID, "Sclass"));
     dispatch(getAllTeachers(adminID));
+    dispatch(getFeeSummary(adminID));
   }, [adminID, dispatch]);
 
   // Calculate totals for stats cards
@@ -87,8 +90,8 @@ const AdminHomePage = () => {
     {
       icon: Fees,
       title: 'Fee Collection',
-      value: 23000,
-      prefix: '$',
+      value: feeSummary?.totalPaid || 0,
+      prefix: '₹',
       gradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
       shadowColor: 'rgba(236, 72, 153, 0.3)',
     },
