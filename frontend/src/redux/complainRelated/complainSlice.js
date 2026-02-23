@@ -28,6 +28,14 @@ const complainSlice = createSlice({
         getError: (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        },
+        updateSuccess: (state, action) => {
+            const updated = action.payload;
+            state.complainsList = state.complainsList.map(c =>
+                c._id === updated._id ? { ...c, ...updated } : c
+            );
+            state.loading = false;
+            state.error = null;
         }
     },
 });
@@ -36,7 +44,8 @@ export const {
     getRequest,
     getSuccess,
     getFailed,
-    getError
+    getError,
+    updateSuccess
 } = complainSlice.actions;
 
 export const complainReducer = complainSlice.reducer;

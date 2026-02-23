@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const complainSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'student',
+        required: true
+    },
+    userType: {
+        type: String,
+        enum: ['student', 'teacher'],
         required: true
     },
     date: {
@@ -18,6 +22,11 @@ const complainSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'admin',
         required: true,
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Resolved'],
+        default: 'Pending'
     }
 });
 

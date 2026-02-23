@@ -7,42 +7,50 @@ import { Snackbar } from '@mui/material';
 import styled from 'styled-components';
 
 const Popup = ({ message, setShowPopup, showPopup }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const vertical = "top";
-    const horizontal = "right";
+  const vertical = "top";
+  const horizontal = "right";
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setShowPopup(false);
-        dispatch(underControl());
-        dispatch(underStudentControl());
-    };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowPopup(false);
+    dispatch(underControl());
+    dispatch(underStudentControl());
+  };
 
-    const isSuccess = message === "Done Successfully";
+  const successMessages = [
+    "Done Successfully",
+    "Complaint submitted successfully",
+    "Complaint resolved",
+    "Fee updated successfully",
+    "Fee added successfully",
+  ];
+  const isSuccess = successMessages.some(msg => message?.toLowerCase().includes(msg.toLowerCase()))
+    || message?.toLowerCase().includes("success");
 
-    return (
-        <StyledSnackbar
-            open={showPopup}
-            autoHideDuration={3000}
-            onClose={handleClose}
-            anchorOrigin={{ vertical, horizontal }}
-            key={vertical + horizontal}
-        >
-            <StyledAlert
-                onClose={handleClose}
-                severity={isSuccess ? "success" : "error"}
-                $isSuccess={isSuccess}
-            >
-                <AlertContent>
-                    <AlertIcon>{isSuccess ? '✓' : '✕'}</AlertIcon>
-                    <AlertText>{message}</AlertText>
-                </AlertContent>
-            </StyledAlert>
-        </StyledSnackbar>
-    );
+  return (
+    <StyledSnackbar
+      open={showPopup}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      anchorOrigin={{ vertical, horizontal }}
+      key={vertical + horizontal}
+    >
+      <StyledAlert
+        onClose={handleClose}
+        severity={isSuccess ? "success" : "error"}
+        $isSuccess={isSuccess}
+      >
+        <AlertContent>
+          <AlertIcon>{isSuccess ? '✓' : '✕'}</AlertIcon>
+          <AlertText>{message}</AlertText>
+        </AlertContent>
+      </StyledAlert>
+    </StyledSnackbar>
+  );
 };
 
 export default Popup;
@@ -60,17 +68,17 @@ const StyledSnackbar = styled(Snackbar)`
 const StyledAlert = styled(MuiAlert)`
   && {
     background: ${props => props.$isSuccess
-        ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(52, 211, 153, 0.95) 100%)'
-        : 'linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(248, 113, 113, 0.95) 100%)'};
+    ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(52, 211, 153, 0.95) 100%)'
+    : 'linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(248, 113, 113, 0.95) 100%)'};
     backdrop-filter: blur(20px);
     border: 1px solid ${props => props.$isSuccess
-        ? 'rgba(52, 211, 153, 0.3)'
-        : 'rgba(248, 113, 113, 0.3)'};
+    ? 'rgba(52, 211, 153, 0.3)'
+    : 'rgba(248, 113, 113, 0.3)'};
     border-radius: 14px;
     padding: 12px 20px;
     box-shadow: 0 10px 40px ${props => props.$isSuccess
-        ? 'rgba(16, 185, 129, 0.3)'
-        : 'rgba(239, 68, 68, 0.3)'};
+    ? 'rgba(16, 185, 129, 0.3)'
+    : 'rgba(239, 68, 68, 0.3)'};
     min-width: 280px;
     
     .MuiAlert-icon {

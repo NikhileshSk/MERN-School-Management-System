@@ -490,12 +490,17 @@ const StyledTextField = styled(TextField)`
       color: #ef4444;
     }
     
-    input {
+    input, textarea {
       color: white;
-      
+
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 100px #1a1a2e inset;
         -webkit-text-fill-color: white;
+      }
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        opacity: 1;
       }
     }
   }

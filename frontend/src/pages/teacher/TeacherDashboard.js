@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import {
-    CssBaseline,
-    Box,
-    Toolbar,
-    List,
-    Typography,
-    Divider,
-    IconButton,
+  CssBaseline,
+  Box,
+  Toolbar,
+  List,
+  Typography,
+  Divider,
+  IconButton,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -19,6 +19,7 @@ import StudentAttendance from '../admin/studentRelated/StudentAttendance';
 
 import TeacherClassDetails from './TeacherClassDetails';
 import TeacherComplain from './TeacherComplain';
+import TeacherFees from './TeacherFees';
 import TeacherHomePage from './TeacherHomePage';
 import TeacherProfile from './TeacherProfile';
 import TeacherViewStudent from './TeacherViewStudent';
@@ -26,80 +27,81 @@ import StudentExamMarks from '../admin/studentRelated/StudentExamMarks';
 import styled from 'styled-components';
 
 const TeacherDashboard = () => {
-    const [open, setOpen] = useState(true);
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+  const [open, setOpen] = useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    return (
-        <DashboardWrapper>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar open={open} position='absolute'>
-                    <StyledToolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            sx={{
-                                marginRight: '24px',
-                                ...(open && { display: 'none' }),
-                                '&:hover': {
-                                    background: 'rgba(255, 255, 255, 0.1)',
-                                },
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <TitleSection>
-                            <DashboardTitle variant="h6" noWrap>
-                                Teacher Dashboard
-                            </DashboardTitle>
-                            <TitleBadge>Teaching Portal</TitleBadge>
-                        </TitleSection>
-                        <AccountMenu />
-                    </StyledToolbar>
-                </AppBar>
-                <Drawer variant="permanent" open={open} sx={open ? styles.drawerStyled : styles.hideDrawer}>
-                    <DrawerHeader>
-                        <LogoSection>
-                            <LogoIcon>👨‍🏫</LogoIcon>
-                            {open && <LogoText>EduTeach</LogoText>}
-                        </LogoSection>
-                        <IconButton onClick={toggleDrawer} sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </DrawerHeader>
-                    <StyledDivider />
-                    <List component="nav" sx={{ px: 1 }}>
-                        <TeacherSideBar />
-                    </List>
-                </Drawer>
-                <MainContent component="main">
-                    <Toolbar />
-                    <ContentArea>
-                        <Routes>
-                            <Route path="/" element={<TeacherHomePage />} />
-                            <Route path='*' element={<Navigate to="/" />} />
-                            <Route path="/Teacher/dashboard" element={<TeacherHomePage />} />
-                            <Route path="/Teacher/profile" element={<TeacherProfile />} />
+  return (
+    <DashboardWrapper>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar open={open} position='absolute'>
+          <StyledToolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '24px',
+                ...(open && { display: 'none' }),
+                '&:hover': {
+                  background: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <TitleSection>
+              <DashboardTitle variant="h6" noWrap>
+                Teacher Dashboard
+              </DashboardTitle>
+              <TitleBadge>Teaching Portal</TitleBadge>
+            </TitleSection>
+            <AccountMenu />
+          </StyledToolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open} sx={open ? styles.drawerStyled : styles.hideDrawer}>
+          <DrawerHeader>
+            <LogoSection>
+              <LogoIcon>👨‍🏫</LogoIcon>
+              {open && <LogoText>EduTeach</LogoText>}
+            </LogoSection>
+            <IconButton onClick={toggleDrawer} sx={{ color: 'rgba(255,255,255,0.7)' }}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </DrawerHeader>
+          <StyledDivider />
+          <List component="nav" sx={{ px: 1 }}>
+            <TeacherSideBar />
+          </List>
+        </Drawer>
+        <MainContent component="main">
+          <Toolbar />
+          <ContentArea>
+            <Routes>
+              <Route path="/" element={<TeacherHomePage />} />
+              <Route path='*' element={<Navigate to="/" />} />
+              <Route path="/Teacher/dashboard" element={<TeacherHomePage />} />
+              <Route path="/Teacher/profile" element={<TeacherProfile />} />
 
-                            <Route path="/Teacher/complain" element={<TeacherComplain />} />
+              <Route path="/Teacher/complain" element={<TeacherComplain />} />
+              <Route path="/Teacher/fees" element={<TeacherFees />} />
 
-                            <Route path="/Teacher/class" element={<TeacherClassDetails />} />
-                            <Route path="/Teacher/class/student/:id" element={<TeacherViewStudent />} />
+              <Route path="/Teacher/class" element={<TeacherClassDetails />} />
+              <Route path="/Teacher/class/student/:id" element={<TeacherViewStudent />} />
 
-                            <Route path="/Teacher/class/student/attendance/:studentID/:subjectID" element={<StudentAttendance situation="Subject" />} />
-                            <Route path="/Teacher/class/student/marks/:studentID/:subjectID" element={<StudentExamMarks situation="Subject" />} />
+              <Route path="/Teacher/class/student/attendance/:studentID/:subjectID" element={<StudentAttendance situation="Subject" />} />
+              <Route path="/Teacher/class/student/marks/:studentID/:subjectID" element={<StudentExamMarks situation="Subject" />} />
 
-                            <Route path="/logout" element={<Logout />} />
-                        </Routes>
-                    </ContentArea>
-                </MainContent>
-            </Box>
-        </DashboardWrapper>
-    );
+              <Route path="/logout" element={<Logout />} />
+            </Routes>
+          </ContentArea>
+        </MainContent>
+      </Box>
+    </DashboardWrapper>
+  );
 };
 
 export default TeacherDashboard;
@@ -199,13 +201,13 @@ const ContentArea = styled.div`
 `;
 
 const styles = {
-    drawerStyled: {
-        display: "flex"
+  drawerStyled: {
+    display: "flex"
+  },
+  hideDrawer: {
+    display: 'flex',
+    '@media (max-width: 600px)': {
+      display: 'none',
     },
-    hideDrawer: {
-        display: 'flex',
-        '@media (max-width: 600px)': {
-            display: 'none',
-        },
-    },
+  },
 };

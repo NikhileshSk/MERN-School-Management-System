@@ -9,193 +9,193 @@ import styled, { keyframes } from 'styled-components';
 import Popup from '../../components/Popup';
 
 const AdminRegisterPage = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
+  const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
 
-    const [toggle, setToggle] = useState(false);
-    const [loader, setLoader] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
-    const [message, setMessage] = useState("");
+  const [toggle, setToggle] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState("");
 
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [adminNameError, setAdminNameError] = useState(false);
-    const [schoolNameError, setSchoolNameError] = useState(false);
-    const role = "Admin";
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [adminNameError, setAdminNameError] = useState(false);
+  const [schoolNameError, setSchoolNameError] = useState(false);
+  const role = "Admin";
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-        const name = event.target.adminName.value;
-        const schoolName = event.target.schoolName.value;
-        const email = event.target.email.value;
-        const password = event.target.password.value;
+    const name = event.target.adminName.value;
+    const schoolName = event.target.schoolName.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
 
-        if (!name || !schoolName || !email || !password) {
-            if (!name) setAdminNameError(true);
-            if (!schoolName) setSchoolNameError(true);
-            if (!email) setEmailError(true);
-            if (!password) setPasswordError(true);
-            return;
-        }
+    if (!name || !schoolName || !email || !password) {
+      if (!name) setAdminNameError(true);
+      if (!schoolName) setSchoolNameError(true);
+      if (!email) setEmailError(true);
+      if (!password) setPasswordError(true);
+      return;
+    }
 
-        const fields = { name, email, password, role, schoolName };
-        setLoader(true);
-        dispatch(registerUser(fields, role));
-    };
+    const fields = { name, email, password, role, schoolName };
+    setLoader(true);
+    dispatch(registerUser(fields, role));
+  };
 
-    const handleInputChange = (event) => {
-        const { name } = event.target;
-        if (name === 'email') setEmailError(false);
-        if (name === 'password') setPasswordError(false);
-        if (name === 'adminName') setAdminNameError(false);
-        if (name === 'schoolName') setSchoolNameError(false);
-    };
+  const handleInputChange = (event) => {
+    const { name } = event.target;
+    if (name === 'email') setEmailError(false);
+    if (name === 'password') setPasswordError(false);
+    if (name === 'adminName') setAdminNameError(false);
+    if (name === 'schoolName') setSchoolNameError(false);
+  };
 
-    useEffect(() => {
-        if (status === 'success' || (currentUser !== null && currentRole === 'Admin')) {
-            navigate('/Admin/dashboard');
-        } else if (status === 'failed') {
-            setMessage(response);
-            setShowPopup(true);
-            setLoader(false);
-        } else if (status === 'error') {
-            console.log(error);
-        }
-    }, [status, currentUser, currentRole, navigate, error, response]);
+  useEffect(() => {
+    if (status === 'success' || (currentUser !== null && currentRole === 'Admin')) {
+      navigate('/Admin/dashboard');
+    } else if (status === 'failed') {
+      setMessage(response);
+      setShowPopup(true);
+      setLoader(false);
+    } else if (status === 'error') {
+      console.log(error);
+    }
+  }, [status, currentUser, currentRole, navigate, error, response]);
 
-    return (
-        <PageWrapper>
-            {/* Background Elements */}
-            <BackgroundOrb className="orb-1" />
-            <BackgroundOrb className="orb-2" />
-            <GridPattern />
+  return (
+    <PageWrapper>
+      {/* Background Elements */}
+      <BackgroundOrb className="orb-1" />
+      <BackgroundOrb className="orb-2" />
+      <GridPattern />
 
-            <ContentWrapper>
-                <Grid container sx={{ minHeight: '100vh' }}>
-                    {/* Form Section */}
-                    <Grid item xs={12} md={6}>
-                        <FormSection>
-                            <FormCard>
-                                <LogoSection>
-                                    <RoleBadge>🎓 Admin Registration</RoleBadge>
-                                </LogoSection>
+      <ContentWrapper>
+        <Grid container sx={{ minHeight: '100vh' }}>
+          {/* Form Section */}
+          <Grid item xs={12} md={6}>
+            <FormSection>
+              <FormCard>
+                <LogoSection>
+                  <RoleBadge>🎓 Admin Registration</RoleBadge>
+                </LogoSection>
 
-                                <WelcomeText>
-                                    <Title>Create Your School</Title>
-                                    <Subtitle>Register as an admin to manage your institution</Subtitle>
-                                </WelcomeText>
+                <WelcomeText>
+                  <Title>Create Your School</Title>
+                  <Subtitle>Register as an admin to manage your institution</Subtitle>
+                </WelcomeText>
 
-                                <Form onSubmit={handleSubmit}>
-                                    <StyledTextField
-                                        fullWidth
-                                        id="adminName"
-                                        label="Your Name"
-                                        name="adminName"
-                                        autoComplete="name"
-                                        autoFocus
-                                        error={adminNameError}
-                                        helperText={adminNameError && 'Name is required'}
-                                        onChange={handleInputChange}
-                                    />
-                                    <StyledTextField
-                                        fullWidth
-                                        id="schoolName"
-                                        label="School Name"
-                                        name="schoolName"
-                                        autoComplete="off"
-                                        error={schoolNameError}
-                                        helperText={schoolNameError && 'School name is required'}
-                                        onChange={handleInputChange}
-                                    />
-                                    <StyledTextField
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        error={emailError}
-                                        helperText={emailError && 'Email is required'}
-                                        onChange={handleInputChange}
-                                    />
-                                    <StyledTextField
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type={toggle ? 'text' : 'password'}
-                                        id="password"
-                                        autoComplete="new-password"
-                                        error={passwordError}
-                                        helperText={passwordError && 'Password is required'}
-                                        onChange={handleInputChange}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton onClick={() => setToggle(!toggle)} edge="end" sx={{ color: 'rgba(255,255,255,0.5)' }}>
-                                                        {toggle ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
+                <Form onSubmit={handleSubmit}>
+                  <StyledTextField
+                    fullWidth
+                    id="adminName"
+                    label="Your Name"
+                    name="adminName"
+                    autoComplete="name"
+                    autoFocus
+                    error={adminNameError}
+                    helperText={adminNameError && 'Name is required'}
+                    onChange={handleInputChange}
+                  />
+                  <StyledTextField
+                    fullWidth
+                    id="schoolName"
+                    label="School Name"
+                    name="schoolName"
+                    autoComplete="off"
+                    error={schoolNameError}
+                    helperText={schoolNameError && 'School name is required'}
+                    onChange={handleInputChange}
+                  />
+                  <StyledTextField
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    error={emailError}
+                    helperText={emailError && 'Email is required'}
+                    onChange={handleInputChange}
+                  />
+                  <StyledTextField
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type={toggle ? 'text' : 'password'}
+                    id="password"
+                    autoComplete="new-password"
+                    error={passwordError}
+                    helperText={passwordError && 'Password is required'}
+                    onChange={handleInputChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setToggle(!toggle)} edge="end" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                            {toggle ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
 
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                sx={{
-                                                    color: 'rgba(255,255,255,0.3)',
-                                                    '&.Mui-checked': { color: '#6366f1' }
-                                                }}
-                                            />
-                                        }
-                                        label={<span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>I agree to the Terms & Conditions</span>}
-                                    />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        sx={{
+                          color: 'rgba(255,255,255,0.3)',
+                          '&.Mui-checked': { color: '#6366f1' }
+                        }}
+                      />
+                    }
+                    label={<span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>I agree to the Terms & Conditions</span>}
+                  />
 
-                                    <PrimaryButton type="submit" disabled={loader}>
-                                        {loader ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Create Account"}
-                                    </PrimaryButton>
+                  <PrimaryButton type="submit" disabled={loader}>
+                    {loader ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Create Account"}
+                  </PrimaryButton>
 
-                                    <SignUpRow>
-                                        <span>Already have an account?</span>
-                                        <SignUpLink to="/Adminlogin">Sign in</SignUpLink>
-                                    </SignUpRow>
-                                </Form>
-                            </FormCard>
-                        </FormSection>
-                    </Grid>
+                  <SignUpRow>
+                    <span>Already have an account?</span>
+                    <SignUpLink to="/Adminlogin">Sign in</SignUpLink>
+                  </SignUpRow>
+                </Form>
+              </FormCard>
+            </FormSection>
+          </Grid>
 
-                    {/* Decorative Section */}
-                    <Grid item xs={false} md={6}>
-                        <DecoSection>
-                            <DecoContent>
-                                <DecoIcon>🏫</DecoIcon>
-                                <DecoTitle>Start Managing Your School</DecoTitle>
-                                <DecoText>
-                                    Create a comprehensive management system for your institution.
-                                    Add students, teachers, and track academic progress all in one place.
-                                </DecoText>
-                                <FeatureList>
-                                    <FeatureItem>✓ Complete Student Management</FeatureItem>
-                                    <FeatureItem>✓ Teacher & Staff Portal</FeatureItem>
-                                    <FeatureItem>✓ Attendance Tracking</FeatureItem>
-                                    <FeatureItem>✓ Grade Management</FeatureItem>
-                                </FeatureList>
-                            </DecoContent>
-                            <FloatingShapes>
-                                <Shape className="shape-1" />
-                                <Shape className="shape-2" />
-                                <Shape className="shape-3" />
-                            </FloatingShapes>
-                        </DecoSection>
-                    </Grid>
-                </Grid>
-            </ContentWrapper>
+          {/* Decorative Section */}
+          <Grid item xs={false} md={6}>
+            <DecoSection>
+              <DecoContent>
+                <DecoIcon>🏫</DecoIcon>
+                <DecoTitle>Start Managing Your School</DecoTitle>
+                <DecoText>
+                  Create a comprehensive management system for your institution.
+                  Add students, teachers, and track academic progress all in one place.
+                </DecoText>
+                <FeatureList>
+                  <FeatureItem>✓ Complete Student Management</FeatureItem>
+                  <FeatureItem>✓ Teacher & Staff Portal</FeatureItem>
+                  <FeatureItem>✓ Attendance Tracking</FeatureItem>
+                  <FeatureItem>✓ Grade Management</FeatureItem>
+                </FeatureList>
+              </DecoContent>
+              <FloatingShapes>
+                <Shape className="shape-1" />
+                <Shape className="shape-2" />
+                <Shape className="shape-3" />
+              </FloatingShapes>
+            </DecoSection>
+          </Grid>
+        </Grid>
+      </ContentWrapper>
 
-            <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-        </PageWrapper>
-    );
+      <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+    </PageWrapper>
+  );
 };
 
 export default AdminRegisterPage;
@@ -353,12 +353,17 @@ const StyledTextField = styled(TextField)`
       color: #ef4444;
     }
     
-    input {
+    input, textarea {
       color: white;
       
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 100px #1a1a2e inset;
         -webkit-text-fill-color: white;
+      }
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        opacity: 1;
       }
     }
   }

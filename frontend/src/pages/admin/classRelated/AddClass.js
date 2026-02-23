@@ -8,90 +8,90 @@ import Popup from "../../../components/Popup";
 import styled, { keyframes } from "styled-components";
 
 const AddClass = () => {
-    const [sclassName, setSclassName] = useState("");
+  const [sclassName, setSclassName] = useState("");
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-    const userState = useSelector(state => state.user);
-    const { status, currentUser, response, error, tempDetails } = userState;
+  const userState = useSelector(state => state.user);
+  const { status, currentUser, response, error, tempDetails } = userState;
 
-    const adminID = currentUser._id
-    const address = "Sclass"
+  const adminID = currentUser._id
+  const address = "Sclass"
 
-    const [loader, setLoader] = useState(false)
-    const [message, setMessage] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
+  const [loader, setLoader] = useState(false)
+  const [message, setMessage] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
-    const fields = {
-        sclassName,
-        adminID,
-    };
+  const fields = {
+    sclassName,
+    adminID,
+  };
 
-    const submitHandler = (event) => {
-        event.preventDefault()
-        setLoader(true)
-        dispatch(addStuff(fields, address))
-    };
+  const submitHandler = (event) => {
+    event.preventDefault()
+    setLoader(true)
+    dispatch(addStuff(fields, address))
+  };
 
-    useEffect(() => {
-        if (status === 'added' && tempDetails) {
-            navigate("/Admin/classes/class/" + tempDetails._id)
-            dispatch(underControl())
-            setLoader(false)
-        }
-        else if (status === 'failed') {
-            setMessage(response)
-            setShowPopup(true)
-            setLoader(false)
-        }
-        else if (status === 'error') {
-            setMessage("Network Error")
-            setShowPopup(true)
-            setLoader(false)
-        }
-    }, [status, navigate, error, response, dispatch, tempDetails]);
+  useEffect(() => {
+    if (status === 'added' && tempDetails) {
+      navigate("/Admin/classes/class/" + tempDetails._id)
+      dispatch(underControl())
+      setLoader(false)
+    }
+    else if (status === 'failed') {
+      setMessage(response)
+      setShowPopup(true)
+      setLoader(false)
+    }
+    else if (status === 'error') {
+      setMessage("Network Error")
+      setShowPopup(true)
+      setLoader(false)
+    }
+  }, [status, navigate, error, response, dispatch, tempDetails]);
 
-    return (
-        <PageWrapper>
-            <FormCard>
-                <IconWrapper>
-                    <span>🏫</span>
-                </IconWrapper>
+  return (
+    <PageWrapper>
+      <FormCard>
+        <IconWrapper>
+          <span>🏫</span>
+        </IconWrapper>
 
-                <FormHeader>
-                    <FormTitle>Create New Class</FormTitle>
-                    <FormSubtitle>Add a new class to your school</FormSubtitle>
-                </FormHeader>
+        <FormHeader>
+          <FormTitle>Create New Class</FormTitle>
+          <FormSubtitle>Add a new class to your school</FormSubtitle>
+        </FormHeader>
 
-                <Form onSubmit={submitHandler}>
-                    <Stack spacing={3}>
-                        <StyledTextField
-                            label="Class Name"
-                            variant="outlined"
-                            placeholder="e.g., Grade 10, Class A"
-                            value={sclassName}
-                            onChange={(event) => {
-                                setSclassName(event.target.value);
-                            }}
-                            required
-                            fullWidth
-                        />
-                        <SubmitButton
-                            type="submit"
-                            disabled={loader}
-                        >
-                            {loader ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Create Class"}
-                        </SubmitButton>
-                        <BackButton type="button" onClick={() => navigate(-1)}>
-                            Go Back
-                        </BackButton>
-                    </Stack>
-                </Form>
-            </FormCard>
-            <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-        </PageWrapper>
-    )
+        <Form onSubmit={submitHandler}>
+          <Stack spacing={3}>
+            <StyledTextField
+              label="Class Name"
+              variant="outlined"
+              placeholder="e.g., Grade 10, Class A"
+              value={sclassName}
+              onChange={(event) => {
+                setSclassName(event.target.value);
+              }}
+              required
+              fullWidth
+            />
+            <SubmitButton
+              type="submit"
+              disabled={loader}
+            >
+              {loader ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Create Class"}
+            </SubmitButton>
+            <BackButton type="button" onClick={() => navigate(-1)}>
+              Go Back
+            </BackButton>
+          </Stack>
+        </Form>
+      </FormCard>
+      <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+    </PageWrapper>
+  )
 }
 
 export default AddClass
@@ -200,11 +200,12 @@ const StyledTextField = styled(TextField)`
       }
     }
     
-    input {
+    input, textarea {
       color: white;
       
       &::placeholder {
-        color: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 0.5);
+        opacity: 1;
       }
     }
   }

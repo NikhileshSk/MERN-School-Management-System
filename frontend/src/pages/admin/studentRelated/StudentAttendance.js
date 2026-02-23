@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { PurpleButton } from '../../../components/buttonStyles';
 import Popup from '../../../components/Popup';
+import styled from 'styled-components';
 
 const StudentAttendance = ({ situation }) => {
     const dispatch = useDispatch();
@@ -125,13 +126,18 @@ const StudentAttendance = ({ situation }) => {
                                     {
                                         situation === "Student" &&
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Select Subject</InputLabel>
+                                            <InputLabel id="demo-simple-select-label" sx={{ color: 'rgba(255,255,255,0.5)' }}>Select Subject</InputLabel>
                                             <Select
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 value={subjectName}
                                                 label="Choose an option"
                                                 onChange={changeHandler} required
+                                                sx={{
+                                                    color: 'white',
+                                                    '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' },
+                                                    '.MuiSvgIcon-root ': { fill: "white !important" }
+                                                }}
                                             >
                                                 {subjectsList ?
                                                     subjectsList.map((subject, index) => (
@@ -148,7 +154,7 @@ const StudentAttendance = ({ situation }) => {
                                         </FormControl>
                                     }
                                     <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Attendance Status</InputLabel>
+                                        <InputLabel id="demo-simple-select-label" sx={{ color: 'rgba(255,255,255,0.5)' }}>Attendance Status</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
@@ -156,13 +162,18 @@ const StudentAttendance = ({ situation }) => {
                                             label="Choose an option"
                                             onChange={(event) => setStatus(event.target.value)}
                                             required
+                                            sx={{
+                                                color: 'white',
+                                                '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' },
+                                                '.MuiSvgIcon-root ': { fill: "white !important" }
+                                            }}
                                         >
                                             <MenuItem value="Present">Present</MenuItem>
                                             <MenuItem value="Absent">Absent</MenuItem>
                                         </Select>
                                     </FormControl>
                                     <FormControl>
-                                        <TextField
+                                        <StyledTextField
                                             label="Select Date"
                                             type="date"
                                             value={date}
@@ -195,3 +206,23 @@ const StudentAttendance = ({ situation }) => {
 }
 
 export default StudentAttendance
+
+const StyledTextField = styled(TextField)`
+  && {
+    .MuiOutlinedInput-root {
+      color: white;
+      fieldset {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      &:hover fieldset {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+    .MuiInputLabel-root {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    input {
+      color: white;
+    }
+  }
+`;

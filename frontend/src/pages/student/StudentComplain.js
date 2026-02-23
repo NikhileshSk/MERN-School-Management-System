@@ -6,93 +6,104 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 
 const StudentComplain = () => {
-    const [complaint, setComplaint] = useState("");
-    const [date, setDate] = useState("");
+  const [complaint, setComplaint] = useState("");
+  const [date, setDate] = useState("");
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    const { status, currentUser, error } = useSelector(state => state.user);
+  const { status, currentUser, error } = useSelector(state => state.user);
 
-    const user = currentUser._id
-    const school = currentUser.school._id
-    const address = "Complain"
+  const [loader, setLoader] = useState(false)
+  const [message, setMessage] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
-    const [loader, setLoader] = useState(false)
-    const [message, setMessage] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
-
+  const submitHandler = (event) => {
+    event.preventDefault()
+    if (!currentUser?._id) {
+      setMessage("Please log out and log back in.")
+      setShowPopup(true)
+      return
+    }
+    setLoader(true)
     const fields = {
-        user,
-        date,
-        complaint,
-        school,
+      user: currentUser._id,
+      userType: 'student',
+      date,
+      complaint,
     };
+    dispatch(addStuff(fields, "Complain"))
+  };
 
-    const submitHandler = (event) => {
-        event.preventDefault()
-        setLoader(true)
-        dispatch(addStuff(fields, address))
-    };
+  useEffect(() => {
+    if (status === "added") {
+      setLoader(false)
+      setShowPopup(true)
+      setMessage("Done Successfully")
+      setComplaint("")
+      setDate("")
+    }
+    else if (error) {
+      setLoader(false)
+      setShowPopup(true)
+      setMessage("Network Error")
+    }
+  }, [status, error])
 
-    useEffect(() => {
-        if (status === "added") {
-            setLoader(false)
-            setShowPopup(true)
-            setMessage("Done Successfully")
-            setComplaint("")
-            setDate("")
-        }
-        else if (error) {
-            setLoader(false)
-            setShowPopup(true)
-            setMessage("Network Error")
-        }
-    }, [status, error])
-
+  if (!currentUser) {
     return (
-        <PageWrapper>
-            <FormCard>
-                <IconWrapper>
-                    <span>📝</span>
-                </IconWrapper>
-
-                <FormHeader>
-                    <FormTitle>Submit a Complaint</FormTitle>
-                    <FormSubtitle>We're here to help. Share your concerns with us.</FormSubtitle>
-                </FormHeader>
-
-                <Form onSubmit={submitHandler}>
-                    <Stack spacing={3}>
-                        <StyledTextField
-                            fullWidth
-                            label="Select Date"
-                            type="date"
-                            value={date}
-                            onChange={(event) => setDate(event.target.value)}
-                            required
-                            InputLabelProps={{ shrink: true }}
-                        />
-                        <StyledTextField
-                            fullWidth
-                            label="Write your complaint"
-                            variant="outlined"
-                            placeholder="Describe your issue in detail..."
-                            value={complaint}
-                            onChange={(event) => setComplaint(event.target.value)}
-                            required
-                            multiline
-                            rows={4}
-                        />
-
-                        <SubmitButton type="submit" disabled={loader}>
-                            {loader ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Submit Complaint"}
-                        </SubmitButton>
-                    </Stack>
-                </Form>
-            </FormCard>
-            <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-        </PageWrapper>
+      <PageWrapper>
+        <LoadingState>
+          <CircularProgress sx={{ color: '#10b981' }} />
+          <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: '16px' }}>Loading user data...</p>
+        </LoadingState>
+      </PageWrapper>
     );
+  }
+
+  return (
+    <PageWrapper>
+      <FormCard>
+        <IconWrapper>
+          <span>📝</span>
+        </IconWrapper>
+
+        <FormHeader>
+          <FormTitle>Submit a Complaint</FormTitle>
+          <FormSubtitle>We're here to help. Share your concerns with us.</FormSubtitle>
+        </FormHeader>
+
+        <Form onSubmit={submitHandler}>
+          <Stack spacing={3}>
+            <StyledTextField
+              fullWidth
+              label="Select Date"
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              required
+              InputLabelProps={{ shrink: true }}
+            />
+            <StyledTextField
+              fullWidth
+              label="Write your complaint"
+              variant="outlined"
+              placeholder="Describe your issue in detail..."
+              value={complaint}
+              onChange={(event) => setComplaint(event.target.value)}
+              required
+              multiline
+              rows={4}
+            />
+
+            <SubmitButton type="submit" disabled={loader}>
+              {loader ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Submit Complaint"}
+            </SubmitButton>
+          </Stack>
+        </Form>
+      </FormCard>
+      <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+    </PageWrapper>
+  );
 };
 
 export default StudentComplain;
@@ -121,6 +132,14 @@ const PageWrapper = styled.div`
   justify-content: center;
   min-height: calc(100vh - 150px);
   padding: 20px;
+`;
+
+const LoadingState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
 `;
 
 const FormCard = styled.div`
@@ -191,6 +210,18 @@ const StyledTextField = styled(TextField)`
         border-color: #10b981;
         border-width: 2px;
       }
+      
+      input {
+        color: white;
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+          opacity: 1;
+        }
+      }
+      
+      textarea {
+        color: white;
+      }
     }
     
     .MuiInputLabel-root {
@@ -198,14 +229,6 @@ const StyledTextField = styled(TextField)`
       
       &.Mui-focused {
         color: #10b981;
-      }
-    }
-    
-    input, textarea {
-      color: white;
-      
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.3);
       }
     }
   }

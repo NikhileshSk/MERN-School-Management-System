@@ -34,12 +34,17 @@ const SeeNotice = () => {
    * Admin fetches by their own ID, other roles fetch by school ID
    */
   useEffect(() => {
-    if (currentRole === "Admin") {
-      dispatch(getAllNotices(currentUser._id, "Notice"));
-    } else {
-      dispatch(getAllNotices(currentUser.school._id, "Notice"));
+    if (currentUser) {
+      if (currentRole === "Admin") {
+        dispatch(getAllNotices(currentUser._id, "Notice"));
+      } else {
+        const schoolId = currentUser.school?._id || currentUser.school;
+        if (schoolId) {
+          dispatch(getAllNotices(schoolId, "Notice"));
+        }
+      }
     }
-  }, [dispatch]);
+  }, [currentUser, currentRole, dispatch]);
 
   // Error logging for debugging
   if (error) {

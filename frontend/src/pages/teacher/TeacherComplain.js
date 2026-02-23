@@ -13,25 +13,25 @@ const TeacherComplain = () => {
 
   const { status, currentUser, error } = useSelector(state => state.user);
 
-  const user = currentUser._id
-  const school = currentUser.school._id
-  const address = "Complain"
-
   const [loader, setLoader] = useState(false)
   const [message, setMessage] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
-  const fields = {
-    user,
-    date,
-    complaint,
-    school,
-  };
-
   const submitHandler = (event) => {
     event.preventDefault()
+    if (!currentUser?._id) {
+      setMessage("Please log out and log back in.")
+      setShowPopup(true)
+      return
+    }
     setLoader(true)
-    dispatch(addStuff(fields, address))
+    const fields = {
+      user: currentUser._id,
+      userType: 'teacher',
+      date,
+      complaint,
+    };
+    dispatch(addStuff(fields, "Complain"))
   };
 
   useEffect(() => {
@@ -48,6 +48,17 @@ const TeacherComplain = () => {
       setMessage("Network Error")
     }
   }, [status, error])
+
+  if (!currentUser) {
+    return (
+      <PageWrapper>
+        <LoadingState>
+          <CircularProgress sx={{ color: '#f59e0b' }} />
+          <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: '16px' }}>Loading user data...</p>
+        </LoadingState>
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper>
@@ -123,6 +134,14 @@ const PageWrapper = styled.div`
   padding: 20px;
 `;
 
+const LoadingState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+`;
+
 const FormCard = styled.div`
   width: 100%;
   max-width: 520px;
@@ -191,6 +210,18 @@ const StyledTextField = styled(TextField)`
         border-color: #f59e0b;
         border-width: 2px;
       }
+      
+      input {
+        color: white;
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+          opacity: 1;
+        }
+      }
+      
+      textarea {
+        color: white;
+      }
     }
     
     .MuiInputLabel-root {
@@ -198,14 +229,6 @@ const StyledTextField = styled(TextField)`
       
       &.Mui-focused {
         color: #f59e0b;
-      }
-    }
-    
-    input, textarea {
-      color: white;
-      
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.3);
       }
     }
   }

@@ -25,6 +25,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 
 const TeacherSideBar = () => {
   // Get current user's assigned class from Redux store
@@ -41,6 +42,7 @@ const TeacherSideBar = () => {
   const menuItems = [
     { path: '/', altPath: '/Teacher/dashboard', icon: <HomeIcon />, label: 'Dashboard' },
     { path: '/Teacher/class', icon: <ClassOutlinedIcon />, label: `Class ${sclassName?.sclassName || ''}` },
+    { path: '/Teacher/fees', icon: <PaymentOutlinedIcon />, label: 'Fees' },
     { path: '/Teacher/complain', icon: <AnnouncementOutlinedIcon />, label: 'Complain' },
   ];
 

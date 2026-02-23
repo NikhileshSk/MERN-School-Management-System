@@ -57,7 +57,7 @@ const StudentProfile = () => {
         </ProfileDetails>
       </ProfileCard>
 
-      <InfoCard>
+      {/* <InfoCard>
         <InfoCardHeader>
           <InfoCardIcon>📋</InfoCardIcon>
           <InfoCardTitle>Personal Information</InfoCardTitle>
@@ -71,7 +71,7 @@ const StudentProfile = () => {
             </InfoItem>
           ))}
         </InfoGrid>
-      </InfoCard>
+      </InfoCard> */}
     </PageWrapper>
   )
 }

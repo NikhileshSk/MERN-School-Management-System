@@ -13,6 +13,7 @@ import {
     Typography, Stack,
     TextField, CircularProgress, FormControl
 } from '@mui/material';
+import styled from 'styled-components';
 
 const StudentExamMarks = ({ situation }) => {
     const dispatch = useDispatch();
@@ -124,7 +125,7 @@ const StudentExamMarks = ({ situation }) => {
                                     {
                                         situation === "Student" &&
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">
+                                            <InputLabel id="demo-simple-select-label" sx={{ color: 'rgba(255,255,255,0.5)', '&.Mui-focused': { color: '#1976d2' } }}>
                                                 Select Subject
                                             </InputLabel>
                                             <Select
@@ -133,6 +134,13 @@ const StudentExamMarks = ({ situation }) => {
                                                 value={subjectName}
                                                 label="Choose an option"
                                                 onChange={changeHandler} required
+                                                sx={{
+                                                    color: 'white',
+                                                    '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' },
+                                                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.2)' },
+                                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#1976d2' },
+                                                    '.MuiSvgIcon-root ': { fill: "white !important" }
+                                                }}
                                             >
                                                 {subjectsList ?
                                                     subjectsList.map((subject, index) => (
@@ -149,7 +157,7 @@ const StudentExamMarks = ({ situation }) => {
                                         </FormControl>
                                     }
                                     <FormControl>
-                                        <TextField type="number" label='Enter marks'
+                                        <StyledTextField type="number" label='Enter marks'
                                             value={marksObtained} required
                                             onChange={(e) => setMarksObtained(e.target.value)}
                                             InputLabelProps={{
@@ -179,3 +187,29 @@ const StudentExamMarks = ({ situation }) => {
 }
 
 export default StudentExamMarks
+
+const StyledTextField = styled(TextField)`
+  && {
+    .MuiOutlinedInput-root {
+      color: white;
+      fieldset {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      &:hover fieldset {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      &.Mui-focused fieldset {
+        border-color: #1976d2;
+      }
+    }
+    .MuiInputLabel-root {
+      color: rgba(255, 255, 255, 0.5);
+      &.Mui-focused {
+        color: #1976d2;
+      }
+    }
+    input {
+      color: white;
+    }
+  }
+`;

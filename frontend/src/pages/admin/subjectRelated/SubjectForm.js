@@ -179,5 +179,8 @@ const styles = {
         '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#838080',
         },
+        '& .MuiInputBase-input': {
+            color: 'white',
+        }
     },
 };

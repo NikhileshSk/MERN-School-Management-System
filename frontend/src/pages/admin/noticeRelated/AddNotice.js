@@ -214,7 +214,8 @@ const StyledTextField = styled(TextField)`
       color: white;
       
       &::placeholder {
-        color: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 0.5);
+        opacity: 1;
       }
     }
   }

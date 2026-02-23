@@ -1,10 +1,23 @@
 const Fee = require('../models/feeSchema.js');
+const Student = require('../models/studentSchema.js');
 
 const feeCreate = async (req, res) => {
     try {
+        let schoolId = req.body.adminID;
+        if (!schoolId) {
+            const studentRecord = await Student.findById(req.body.student);
+            if (studentRecord) {
+                schoolId = studentRecord.school;
+            }
+        }
+
+        if (!schoolId) {
+            return res.status(400).json({ message: "Could not determine school ID" });
+        }
+
         const fee = new Fee({
             ...req.body,
-            school: req.body.adminID
+            school: schoolId
         });
         const result = await fee.save();
         res.send(result);
