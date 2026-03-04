@@ -10,176 +10,176 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import styled, { keyframes } from 'styled-components';
 
 const TeacherClassDetails = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch();
-    const { sclassStudents, loading, error, getresponse } = useSelector((state) => state.sclass);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { sclassStudents, loading, error, getresponse } = useSelector((state) => state.sclass);
 
-    const { currentUser } = useSelector((state) => state.user);
-    const classID = currentUser.teachSclass?._id
-    const subjectID = currentUser.teachSubject?._id
+  const { currentUser } = useSelector((state) => state.user);
+  const classID = currentUser.teachSclass?._id
+  const subjectID = currentUser.teachSubject?._id
 
-    useEffect(() => {
-        dispatch(getClassStudents(classID));
-    }, [dispatch, classID])
+  useEffect(() => {
+    dispatch(getClassStudents(classID));
+  }, [dispatch, classID])
 
-    if (error) {
-        console.log(error)
-    }
+  if (error) {
+    console.log(error)
+  }
 
-    const studentColumns = [
-        { id: 'name', label: 'Name', minWidth: 170 },
-        { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
-    ]
+  const studentColumns = [
+    { id: 'name', label: 'Name', minWidth: 170 },
+    { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
+  ]
 
-    const studentRows = sclassStudents.map((student) => {
-        return {
-            name: student.name,
-            rollNum: student.rollNum,
-            id: student._id,
-        };
-    })
+  const studentRows = sclassStudents.map((student) => {
+    return {
+      name: student.name,
+      rollNum: student.rollNum,
+      id: student._id,
+    };
+  })
 
-    const StudentsButtonHaver = ({ row }) => {
-        const options = ['Take Attendance', 'Provide Marks'];
+  const StudentsButtonHaver = ({ row }) => {
+    const options = ['Take Attendance', 'Provide Marks'];
 
-        const [open, setOpen] = React.useState(false);
-        const anchorRef = React.useRef(null);
-        const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-        const handleClick = () => {
-            console.info(`You clicked ${options[selectedIndex]}`);
-            if (selectedIndex === 0) {
-                handleAttendance();
-            } else if (selectedIndex === 1) {
-                handleMarks();
-            }
-        };
-
-        const handleAttendance = () => {
-            navigate(`/Teacher/class/student/attendance/${row.id}/${subjectID}`)
-        }
-        const handleMarks = () => {
-            navigate(`/Teacher/class/student/marks/${row.id}/${subjectID}`)
-        };
-
-        const handleMenuItemClick = (event, index) => {
-            setSelectedIndex(index);
-            setOpen(false);
-        };
-
-        const handleToggle = () => {
-            setOpen((prevOpen) => !prevOpen);
-        };
-
-        const handleClose = (event) => {
-            if (anchorRef.current && anchorRef.current.contains(event.target)) {
-                return;
-            }
-
-            setOpen(false);
-        };
-        return (
-            <ButtonContainer>
-                <BlueButton
-                    variant="contained"
-                    onClick={() =>
-                        navigate("/Teacher/class/student/" + row.id)
-                    }
-                >
-                    View
-                </BlueButton>
-                <React.Fragment>
-                    <StyledButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-                        <ActionButton onClick={handleClick}>{options[selectedIndex]}</ActionButton>
-                        <DropdownButton
-                            size="small"
-                            aria-controls={open ? 'split-button-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-label="select merge strategy"
-                            aria-haspopup="menu"
-                            onClick={handleToggle}
-                        >
-                            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                        </DropdownButton>
-                    </StyledButtonGroup>
-                    <Popper
-                        sx={{
-                            zIndex: 1,
-                        }}
-                        open={open}
-                        anchorEl={anchorRef.current}
-                        role={undefined}
-                        transition
-                        disablePortal
-                    >
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                style={{
-                                    transformOrigin:
-                                        placement === 'bottom' ? 'center top' : 'center bottom',
-                                }}
-                            >
-                                <StyledPaper>
-                                    <ClickAwayListener onClickAway={handleClose}>
-                                        <MenuList id="split-button-menu" autoFocusItem>
-                                            {options.map((option, index) => (
-                                                <StyledMenuItem
-                                                    key={option}
-                                                    disabled={index === 2}
-                                                    selected={index === selectedIndex}
-                                                    onClick={(event) => handleMenuItemClick(event, index)}
-                                                >
-                                                    {option}
-                                                </StyledMenuItem>
-                                            ))}
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </StyledPaper>
-                            </Grow>
-                        )}
-                    </Popper>
-                </React.Fragment>
-            </ButtonContainer>
-        );
+    const handleClick = () => {
+      console.info(`You clicked ${options[selectedIndex]}`);
+      if (selectedIndex === 0) {
+        handleAttendance();
+      } else if (selectedIndex === 1) {
+        handleMarks();
+      }
     };
 
-    return (
-        <PageWrapper>
-            {loading ? (
-                <LoadingWrapper>
-                    <LoadingSpinner />
-                    <LoadingText>Loading class details...</LoadingText>
-                </LoadingWrapper>
-            ) : (
-                <>
-                    <PageHeader>
-                        <HeaderIcon>👨‍🎓</HeaderIcon>
-                        <HeaderText>
-                            <PageTitle>Class Students</PageTitle>
-                            <PageSubtitle>
-                                {currentUser.teachSclass?.sclassName} • {sclassStudents?.length || 0} students
-                            </PageSubtitle>
-                        </HeaderText>
-                    </PageHeader>
+    const handleAttendance = () => {
+      navigate(`/Teacher/class/student/attendance/${row.id}/${subjectID}`)
+    }
+    const handleMarks = () => {
+      navigate(`/Teacher/class/student/marks/${row.id}/${subjectID}`)
+    };
 
-                    {getresponse ? (
-                        <EmptyState>
-                            <EmptyIcon>📚</EmptyIcon>
-                            <EmptyTitle>No Students Found</EmptyTitle>
-                            <EmptyText>There are no students enrolled in this class yet</EmptyText>
-                        </EmptyState>
-                    ) : (
-                        <TableWrapper>
-                            {Array.isArray(sclassStudents) && sclassStudents.length > 0 &&
-                                <TableTemplate buttonHaver={StudentsButtonHaver} columns={studentColumns} rows={studentRows} />
-                            }
-                        </TableWrapper>
-                    )}
-                </>
+    const handleMenuItemClick = (event, index) => {
+      setSelectedIndex(index);
+      setOpen(false);
+    };
+
+    const handleToggle = () => {
+      setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event) => {
+      if (anchorRef.current && anchorRef.current.contains(event.target)) {
+        return;
+      }
+
+      setOpen(false);
+    };
+    return (
+      <ButtonContainer>
+        <BlueButton
+          variant="contained"
+          onClick={() =>
+            navigate("/Teacher/class/student/" + row.id)
+          }
+        >
+          View
+        </BlueButton>
+        <React.Fragment>
+          <StyledButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
+            <ActionButton onClick={handleClick}>{options[selectedIndex]}</ActionButton>
+            <DropdownButton
+              size="small"
+              aria-controls={open ? 'split-button-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-label="select merge strategy"
+              aria-haspopup="menu"
+              onClick={handleToggle}
+            >
+              {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            </DropdownButton>
+          </StyledButtonGroup>
+          <Popper
+            sx={{
+              zIndex: 9999,
+            }}
+            open={open}
+            anchorEl={anchorRef.current}
+            role={undefined}
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === 'bottom' ? 'center top' : 'center bottom',
+                }}
+              >
+                <StyledPaper>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList id="split-button-menu" autoFocusItem>
+                      {options.map((option, index) => (
+                        <StyledMenuItem
+                          key={option}
+                          selected={index === selectedIndex}
+                          onClick={(event) => handleMenuItemClick(event, index)}
+                          sx={{ color: 'white' }}
+                        >
+                          {option}
+                        </StyledMenuItem>
+                      ))}
+                    </MenuList>
+                  </ClickAwayListener>
+                </StyledPaper>
+              </Grow>
             )}
-        </PageWrapper>
+          </Popper>
+        </React.Fragment>
+      </ButtonContainer>
     );
+  };
+
+  return (
+    <PageWrapper>
+      {loading ? (
+        <LoadingWrapper>
+          <LoadingSpinner />
+          <LoadingText>Loading class details...</LoadingText>
+        </LoadingWrapper>
+      ) : (
+        <>
+          <PageHeader>
+            <HeaderIcon>👨‍🎓</HeaderIcon>
+            <HeaderText>
+              <PageTitle>Class Students</PageTitle>
+              <PageSubtitle>
+                {currentUser.teachSclass?.sclassName} • {sclassStudents?.length || 0} students
+              </PageSubtitle>
+            </HeaderText>
+          </PageHeader>
+
+          {getresponse ? (
+            <EmptyState>
+              <EmptyIcon>📚</EmptyIcon>
+              <EmptyTitle>No Students Found</EmptyTitle>
+              <EmptyText>There are no students enrolled in this class yet</EmptyText>
+            </EmptyState>
+          ) : (
+            <TableWrapper>
+              {Array.isArray(sclassStudents) && sclassStudents.length > 0 &&
+                <TableTemplate buttonHaver={StudentsButtonHaver} columns={studentColumns} rows={studentRows} />
+              }
+            </TableWrapper>
+          )}
+        </>
+      )}
+    </PageWrapper>
+  );
 };
 
 export default TeacherClassDetails;
@@ -267,7 +267,8 @@ const TableWrapper = styled.div`
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
-  overflow: hidden;
+  overflow: visible;
+  padding-bottom: 80px;
 `;
 
 const EmptyState = styled.div`

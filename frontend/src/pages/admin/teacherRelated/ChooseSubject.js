@@ -56,7 +56,7 @@ const ChooseSubject = ({ situation }) => {
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <Typography variant="h6" gutterBottom component="div">
+            <Typography variant="h6" gutterBottom component="div" sx={{ color: 'white' }}>
                 Choose a subject
             </Typography>
             <>

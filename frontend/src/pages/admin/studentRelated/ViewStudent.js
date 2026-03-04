@@ -341,20 +341,17 @@ const ViewStudent = () => {
 
     const StudentDetailsSection = () => {
         return (
-            <div>
-                Name: {userDetails.name}
-                <br />
-                Roll Number: {userDetails.rollNum}
-                <br />
-                Class: {sclassName.sclassName}
-                <br />
-                School: {studentSchool.schoolName}
+            <Box sx={{ color: 'white' }}>
+                <Typography variant="h6" gutterBottom>Name: {userDetails.name}</Typography>
+                <Typography variant="h6" gutterBottom>Roll Number: {userDetails.rollNum}</Typography>
+                <Typography variant="h6" gutterBottom>Class: {sclassName.sclassName}</Typography>
+                <Typography variant="h6" gutterBottom>School: {studentSchool.schoolName}</Typography>
                 {
                     subjectAttendance && Array.isArray(subjectAttendance) && subjectAttendance.length > 0 && (
                         <CustomPieChart data={chartData} />
                     )
                 }
-                <Button variant="contained" sx={styles.styledButton} onClick={deleteHandler}>
+                <Button variant="contained" sx={{ mt: 2, bgcolor: '#d32f2f', '&:hover': { bgcolor: '#b71c1c' } }} onClick={deleteHandler}>
                     Delete
                 </Button>
                 <br />
@@ -392,12 +389,30 @@ const ViewStudent = () => {
                         </form>
                     </div>
                 </Collapse> */}
-            </div>
+            </Box>
         )
     }
 
     return (
         <>
+            <style>
+                {`
+                    body {
+                        background-color: #15152b;
+                        color: white;
+                    }
+                    .MuiTab-root {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                    }
+                    .Mui-selected {
+                        color: white !important;
+                    }
+                    .MuiTableCell-root {
+                        color: white !important;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                    }
+                `}
+            </style>
             {loading
                 ?
                 <>
@@ -407,8 +422,8 @@ const ViewStudent = () => {
                 <>
                     <Box sx={{ width: '100%', typography: 'body1', }} >
                         <TabContext value={value}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: 'background.paper', zIndex: 1 }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                                <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: '#1e1e3c', zIndex: 1 }}>
                                     <Tab label="Details" value="1" />
                                     <Tab label="Attendance" value="2" />
                                     <Tab label="Marks" value="3" />

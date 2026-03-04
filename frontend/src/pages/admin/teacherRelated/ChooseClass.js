@@ -66,7 +66,7 @@ const ChooseClass = ({ situation }) => {
                         </Box>
                         :
                         <>
-                            <Typography variant="h6" gutterBottom component="div">
+                            <Typography variant="h6" gutterBottom component="div" sx={{ color: 'white' }}>
                                 Choose a class
                             </Typography>
                             {Array.isArray(sclassesList) && sclassesList.length > 0 &&

@@ -172,6 +172,20 @@ const TeacherFees = () => {
     return !isNaN(date.getTime()) ? date.toISOString().substring(0, 10) : '-';
   };
 
+  const darkMenuProps = {
+    PaperProps: {
+      sx: {
+        backgroundColor: '#1e1e3c',
+        border: '1px solid rgba(255,255,255,0.1)',
+        '& .MuiMenuItem-root': {
+          color: 'white',
+          '&:hover': { backgroundColor: 'rgba(99,102,241,0.15)' },
+          '&.Mui-selected': { backgroundColor: 'rgba(99,102,241,0.25)' },
+        },
+      },
+    },
+  };
+
   if (!currentUser) {
     return (
       <PageWrapper>
@@ -212,6 +226,7 @@ const TeacherFees = () => {
                   value={selectedStudent}
                   onChange={(e) => setSelectedStudent(e.target.value)}
                   required
+                  SelectProps={{ MenuProps: darkMenuProps }}
                 >
                   {students.map((student) => (
                     <MenuItem key={student._id} value={student._id}>
@@ -227,6 +242,7 @@ const TeacherFees = () => {
                 value={feeType}
                 onChange={(e) => setFeeType(e.target.value)}
                 required
+                SelectProps={{ MenuProps: darkMenuProps }}
               >
                 {['Tuition Fee', 'Exam Fee', 'Lab Fee', 'Library Fee', 'Sports Fee', 'Transport Fee', 'Other'].map(type => (
                   <MenuItem key={type} value={type}>{type}</MenuItem>

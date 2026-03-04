@@ -60,6 +60,20 @@ const StudentAttendance = ({ situation }) => {
         setChosenSubName(selectedSubject._id);
     }
 
+    const darkMenuProps = {
+        PaperProps: {
+            sx: {
+                backgroundColor: '#1e1e3c',
+                border: '1px solid rgba(255,255,255,0.1)',
+                '& .MuiMenuItem-root': {
+                    color: 'white',
+                    '&:hover': { backgroundColor: 'rgba(99,102,241,0.15)' },
+                    '&.Mui-selected': { backgroundColor: 'rgba(99,102,241,0.25)' },
+                },
+            },
+        },
+    };
+
     const fields = { subName: chosenSubName, status, date }
 
     const submitHandler = (event) => {
@@ -138,6 +152,7 @@ const StudentAttendance = ({ situation }) => {
                                                     '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' },
                                                     '.MuiSvgIcon-root ': { fill: "white !important" }
                                                 }}
+                                                MenuProps={darkMenuProps}
                                             >
                                                 {subjectsList ?
                                                     subjectsList.map((subject, index) => (
@@ -167,6 +182,7 @@ const StudentAttendance = ({ situation }) => {
                                                 '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' },
                                                 '.MuiSvgIcon-root ': { fill: "white !important" }
                                             }}
+                                            MenuProps={darkMenuProps}
                                         >
                                             <MenuItem value="Present">Present</MenuItem>
                                             <MenuItem value="Absent">Absent</MenuItem>
